@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxyhub - Universal app store by Yash12007</title>
+    <link rel="shortcut icon" href="https://www.yash12007.com/favicon.ico" type="image/x-icon">
+    <style>
+        html{scroll-behavior: smooth;}
+        ::-webkit-scrollbar {
+            width: 0px;
+            height: 0px;
+        }
+        body {
+            font-family: calibri;
+            margin: 0px;
+            padding: 0px;
+            background: linear-gradient(165deg, #0a0e1f 0%, #151136 45%, #0c1b2e 100%);
+            color: #fff;
+            width: 100vw;
+            height: 100vh;
+        }
+        @keyframes starTwinkle {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                /* deep space base */
+                radial-gradient(1200px 800px at 50% 40%, #1a1440 0%, transparent 70%),
+                /* quasar halo */
+                radial-gradient(520px 520px at 50% 38%, rgba(255, 214, 120, 0.28), rgba(255, 170, 60, 0.12) 45%, transparent 70%),
+                /* accretion disk glow */
+                radial-gradient(300px 300px at 50% 38%, rgba(255, 240, 200, 0.5), rgba(255, 180, 80, 0.18) 55%, transparent 75%),
+                /* twin jet glows */
+                radial-gradient(140px 700px at 50% 38%, rgba(150, 190, 255, 0.22), transparent 70%),
+                radial-gradient(140px 700px at 50% 38%, rgba(150, 190, 255, 0.22), transparent 70%),
+                /* ambient nebula */
+                radial-gradient(700px 380px at 10% 15%, #7b2ff72e, transparent 70%),
+                radial-gradient(600px 340px at 90% 85%, #f7b73122, transparent 70%),
+                radial-gradient(520px 300px at 75% 10%, #4a2fd62e, transparent 70%),
+                radial-gradient(460px 260px at 25% 90%, #3b82f61f, transparent 70%);
+            pointer-events: none;
+        }
+        /* Quasar core + jets element */
+        .quasar {
+            position: fixed;
+            top: 38%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .quasar .core {
+            position: absolute;
+            left: -7px;
+            top: -7px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff 0%, #ffe9a8 40%, #ffb347 75%, transparent 100%);
+            box-shadow:
+                0 0 18px 6px rgba(255, 230, 160, 0.9),
+                0 0 60px 24px rgba(255, 190, 90, 0.55),
+                0 0 140px 60px rgba(255, 160, 70, 0.3);
+            animation: quasarPulse 6s ease-in-out infinite;
+        }
+        .quasar .jet {
+            position: absolute;
+            left: -2px;
+            top: -2px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #dce9ff 0%, #9cc0ff 45%, transparent 100%);
+            box-shadow: 0 0 12px 4px rgba(140, 180, 255, 0.8);
+        }
+        .quasar .jet.up {
+            transform: translateY(-260px) scale(1, 1);
+            animation: jetUp 6s ease-in-out infinite;
+        }
+        .quasar .jet.down {
+            transform: translateY(260px) scale(1, 1);
+            animation: jetDown 6s ease-in-out infinite;
+        }
+        @keyframes quasarPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.12); opacity: 0.92; }
+        }
+        @keyframes jetUp {
+            0%, 100% { transform: translateY(-260px) scale(1, 1); opacity: 0.85; }
+            50% { transform: translateY(-300px) scale(1.15, 1.25); opacity: 1; }
+        }
+        @keyframes jetDown {
+            0%, 100% { transform: translateY(260px) scale(1, 1); opacity: 0.85; }
+            50% { transform: translateY(300px) scale(1.15, 1.25); opacity: 1; }
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image:
+                radial-gradient(3px 3px at 25% 35%, #ffffff, rgba(255,255,255,0.35) 60%, transparent 100%),
+                radial-gradient(2.5px 2.5px at 62% 78%, #ffe9a8, rgba(255,233,168,0.35) 60%, transparent 100%),
+                radial-gradient(2px 2px at 88% 40%, #c9d6ff, rgba(201,214,255,0.35) 60%, transparent 100%),
+                radial-gradient(1px 1px at 8% 20%, #ffffffcc, transparent 100%),
+                radial-gradient(1px 1px at 18% 70%, #ffffff99, transparent 100%),
+                radial-gradient(1.5px 1.5px at 30% 12%, #ffffffb3, transparent 100%),
+                radial-gradient(1px 1px at 42% 55%, #ffffffaa, transparent 100%),
+                radial-gradient(1px 1px at 55% 25%, #ffffff80, transparent 100%),
+                radial-gradient(1.5px 1.5px at 65% 80%, #ffffffb3, transparent 100%),
+                radial-gradient(1px 1px at 78% 35%, #ffffff99, transparent 100%),
+                radial-gradient(1px 1px at 90% 65%, #ffffff80, transparent 100%),
+                radial-gradient(1.5px 1.5px at 95% 15%, #ffffff99, transparent 100%),
+                radial-gradient(1px 1px at 12% 90%, #ffffff80, transparent 100%),
+                radial-gradient(1px 1px at 48% 85%, #ffffffcc, transparent 100%),
+                radial-gradient(1px 1px at 72% 60%, #ffffff66, transparent 100%),
+                radial-gradient(1.5px 1.5px at 25% 40%, #ffffff70, transparent 100%),
+                radial-gradient(1px 1px at 60% 10%, #ffffff60, transparent 100%),
+                radial-gradient(1px 1px at 85% 90%, #ffffffaa, transparent 100%),
+                radial-gradient(1.5px 1.5px at 35% 30%, #ffffff80, transparent 100%),
+                radial-gradient(1px 1px at 68% 45%, #ffffff99, transparent 100%),
+                radial-gradient(1px 1px at 15% 55%, #ffffff70, transparent 100%),
+                radial-gradient(1.5px 1.5px at 50% 95%, #ffffffb3, transparent 100%),
+                radial-gradient(1px 1px at 88% 5%, #ffffff80, transparent 100%);
+            pointer-events: none;
+            animation: starTwinkle 5s ease-in-out infinite alternate;
+        }
+        nav {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: calc(100% - 20px);
+            height: 50px;
+            display: flex;
+            place-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            color: #fff;
+            background: rgba(20, 18, 45, 0.55);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+            z-index: 10000;
+        }
+        nav span {
+            font-weight: 600;
+            color: #fff;
+        }
+        .hero {
+            width: calc(100% - 40px);
+            padding: 20px;
+            height: 80vh;
+            display: flex;
+            text-align: center;
+            place-items: center;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid #ffffff1a;
+        }
+        .hero > div {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(14px) saturate(130%);
+            -webkit-backdrop-filter: blur(14px) saturate(130%);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 24px;
+            padding: 40px 48px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            max-width: 720px;
+        }
+        .hero a {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            font-size: 14px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: background 0.2s ease;
+        }
+        .hero a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .hero a:nth-child(2) {
+            border: none;
+            padding: 10px 20px;
+            background: linear-gradient(120deg, #ff0, #fa0);
+            color: #000;
+        }
+        .hero a:nth-child(2):hover {
+            background: linear-gradient(120deg, #ff0, #fa0);
+        }
+        #SearchInputParent {
+            position: relative;
+            transition: all 0.25s ease-in-out;
+        }#SearchInputParent input::placeholder{
+            color: #ccc;
+        }
+        #SearchInputParent input {
+            width: 220px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            background: #ffffff14;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid #fff7;
+            color: #fff;
+            transition: width 0.3s ease;
+        }
+        #SearchInputParent:focus-within input {
+            width: min(420px, 60vw);
+            background: #111424;
+            border-color: #f7b731;
+            outline: none;
+        }
+        /* Full-screen search overlay - direct child of main so position:fixed
+           resolves against the viewport (nav's backdrop-filter would otherwise
+           trap it as a containing block). */
+        .search-overlay {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            background-color: #05070ff5;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 24px 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .search-overlay.active {
+            display: block;
+        }
+        .search-overlay .search-results-overlay {
+            width: min(720px, 90vw);
+            margin: 0 auto;
+            color: #ccc;
+        }
+        .search-overlay .close-hint {
+            width: min(720px, 90vw);
+            margin: 0 auto 12px;
+            font-size: 12px;
+            color: #777;
+            text-align: right;
+        }main{
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            right: 0px;
+            overflow-y: auto;
+            z-index: 1;
+        }        #features, #why, #Announcements {
+            width: calc(100% - 80px);
+            padding: 20px;
+            height: fit-content;
+            border-bottom: 1px solid #ffffff1a;
+        }
+        #Announcements, #features, #why {
+            margin: 20px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(14px) saturate(130%);
+            -webkit-backdrop-filter: blur(14px) saturate(130%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 20px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        #Announcements h2, #features h2, #why h2 {
+            color: #fff;
+            background: linear-gradient(120deg, #fff 35%, #f7b731 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #Announcements p, #features p, #why p {
+            color: #d5d8ea;
+        }        #NavigationMenu{
+            margin-top: 70px;
+            width: calc(100% - 20px);
+            height: 10px;
+            display: flex;
+            place-items: center;
+            justify-content: space-evenly;
+            background: rgba(20, 18, 45, 0.55);
+            backdrop-filter: blur(14px) saturate(130%);
+            -webkit-backdrop-filter: blur(14px) saturate(130%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+            overflow-x: auto;
+            padding: 10px;
+        }a{
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        #catalog {
+            width: calc(100% - 80px);
+            padding: 20px;
+            height: fit-content;
+            border-bottom: 1px solid #ffffff1a;
+            margin: 20px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(14px) saturate(130%);
+            -webkit-backdrop-filter: blur(14px) saturate(130%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 20px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        #catalog .catalog-head h2 {
+            color: #fff;
+            background: linear-gradient(120deg, #fff 35%, #f7b731 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #catalog .catalog-count {
+            font-size: 13px;
+            color: #9aa0c3;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .product-card {
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px) saturate(130%);
+            -webkit-backdrop-filter: blur(12px) saturate(130%);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow:
+                0 6px 24px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 14px 40px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.16);
+        }
+        .product-card .thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.06);
+            display: block;
+        }
+        .product-card .body {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 8px;
+        }
+        .product-card .name {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #fff;
+        }
+        .product-card .desc {
+            font-size: 13px;
+            color: #b9bdd6;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .product-card .meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #8a8fb0;
+            margin-top: auto;
+        }
+        .product-card .price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #f7b731;
+        }
+        .product-card .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .product-card .actions a {
+            flex: 1;
+            text-align: center;
+            padding: 8px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .product-card .actions a.buy {
+            border: none;
+            background: linear-gradient(120deg, #ff0, #fa0);
+            color: #000;
+            font-weight: 600;
+        }
+        .product-card .badge {
+            align-self: flex-start;
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: rgba(46, 125, 50, 0.22);
+            color: #7ee2a8;
+            border: 1px solid rgba(126, 226, 168, 0.35);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        .product-card .badge.out {
+            background: rgba(198, 40, 40, 0.22);
+            color: #ff8a8a;
+            border-color: rgba(255, 138, 138, 0.35);
+        }
+        .catalog-empty {
+            text-align: center;
+            color: #9aa0c3;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+        .catalog-loading {
+            text-align: center;
+            color: #9aa0c3;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #1a1d2e;
+            margin-bottom: 8px;
+        }
+        .search-result-item:hover {
+            background: #232741;
+        }
+        .search-result-item img {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #fff;
+        }
+        .search-result-item .sr-name {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+        }
+        .search-result-item .sr-price {
+            font-size: 12px;
+            color: #f7b731;
+        }
+        .search-result-item .sr-cat {
+            font-size: 11px;
+            color: #999;
+        }
+        /* ---------- Footer ---------- */
+        footer {
+            width: calc(100% - 90px);
+            margin: 20px;
+            padding: 28px 24px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(14px) saturate(130%);
+            -webkit-backdrop-filter: blur(14px) saturate(130%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 20px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 28px;
+        }
+        .footer-brand {
+            flex: 1 1 280px;
+            max-width: 420px;
+        }
+        .footer-brand h3 {
+            margin: 0 0 10px;
+            font-size: 22px;
+            color: #fff;
+            background: linear-gradient(120deg, #fff 35%, #f7b731 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .footer-brand p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #d5d8ea;
+        }
+        .footer-brand p strong {
+            color: #fff;
+        }
+        .footer-col h4 {
+            margin: 0 0 10px;
+            font-size: 13px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .footer-col a {
+            display: block;
+            margin: 6px 0;
+            font-size: 13px;
+            color: #b9bdd6;
+            transition: color 0.2s ease;
+        }
+        .footer-col a:hover {
+            color: #f7b731;
+        }
+        .footer-bottom {
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 12px;
+            color: #8a8fb0;
+        }
+        .footer-bottom strong {
+            color: #d5d8ea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="quasar" aria-hidden="true">
+        <div class="core"></div>
+        <div class="jet up"></div>
+        <div class="jet down"></div>
+    </div>
+    <main>
+        <nav>
+            <span class="brand">Galaxyhub</span>
+            <div id="SearchInputParent">
+                <div class="search-bar-wrap">
+                    <input id="SAppSearch" type="text" placeholder="Search apps, tools, software..." />
+                </div>
+            </div>
+        </nav>
+        <div id="SearchOverlay" class="search-overlay" aria-hidden="true">
+            <div class="close-hint">Press Esc to close search</div>
+            <div class="search-results-overlay" id="SearchResults"></div>
+        </div>
+        <ul id="NavigationMenu">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#catalog">Store</a></li>
+            <li><a href="#Announcements">Announcements</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#why">Why Galaxyhub</a></li>
+        </ul>
+        <div class="hero" id="hero">
+            <div style="text-align: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" fill="currentColor" class="bi bi-bag-check-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0m-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                </svg>
+                <h1>Discover software that fits your workflow</h1>
+                <p style="font-size: 14px;">Galaxyhub is a curated software marketplace connecting developers with users worldwide. Browse thousands of applications across categories — or publish your own and reach a global audience through the Paradise SDP ecosystem.</p>
+                <div style="display: flex; place-items: center; justify-content: center; gap: 10px;">
+                    <a onclick="document.getElementById('SAppSearch').focus()">Search marketplace</a>
+                    <a href="#features">Publish your app</a>
+                </div>
+            </div>
+        </div>
+        <div id="catalog">
+            <div class="catalog-head">
+                <h2>Store</h2>
+                <span class="catalog-count" id="catalogCount">Loading products...</span>
+            </div>
+            <div class="product-grid" id="productGrid">
+                <div class="catalog-loading">Loading products from the store...</div>
+            </div>
+        </div>
+        <div id="Announcements">
+            <h2>Announcements</h2>
+            <ul>
+                <li><b>Android app distribution program will be discontinued from Oct 1, 2026.</b></li>
+                <p>As part of our evolving platform strategy, the Android app distribution channel on Paradise SDP will be retired on October 1, 2026. Developers currently publishing Android apps should migrate to Windows software distribution before the deadline. Existing Android submissions will remain listed with reduced visibility as new policy restrictions take effect. No action is needed for your Windows-based applications.</p>
+                <li><b>New: Windows desktop publishing is now open for all developers.</b></li>
+                <p>Developers can now publish Windows applications directly on the Galaxyhub marketplace through Paradise SDP. Submit your software with full pricing control, regional availability, and automatic license delivery to buyers worldwide.</p>
+            </ul>
+        </div>
+        <div id="features">
+            <h2>What Galaxyhub offers</h2>
+            <ul>
+                <li><b>Global software distribution</b></li>
+                <p>Publish once and reach users across every region. Galaxyhub handles licensing, delivery, and visibility so you can focus on building great software.</p>
+                <li><b>Developer-first publishing tools</b></li>
+                <p>A streamlined publishing pipeline lets you upload, price, and manage your applications from a single dashboard. Set regional pricing, promotional discounts, and download limits with no technical overhead.</p>
+                <li><b>Instant license delivery</b></li>
+                <p>When a user purchases your software, their download license is issued instantly. No delays, no manual fulfillment — the platform takes care of the entire transaction lifecycle.</p>
+                <li><b>Built-in marketplace visibility</b></li>
+                <p>Every published app is indexed and searchable across Galaxyhub. Categories, tags, and search ensure your software is discoverable by the right audience without additional marketing spend.</p>
+            </ul>
+            <a href="https://paradise.yash12007.com" style="padding: 10px 20px; border-radius: 30px; border: 1px solid #fff;" target="_blank">Start publishing today</a>
+        </div>
+        <div id="why">
+            <h2>Why Galaxyhub?</h2>
+            <ul>
+                <li><b>Part of the Paradise SDP ecosystem</b></li>
+                <p>Galaxyhub is the public marketplace layer of Paradise SDP (Software Distribution Platform), built to help individual developers, organisations, and businesses expand their software reach. Your applications gain visibility in every online region, and users can purchase download licenses directly through Galaxyhub — backed by Paradise SDP's distribution infrastructure.</p>
+                <li><b>No payment restrictions</b></li>
+                <p>We support multiple payment methods so developers can publish on the Yash12007 Store, Galaxyhub marketplace, and other Paradise SDP endpoints without geographic or payment-method limitations holding back their distribution.</p>
+                <li><b>Transparent licensing</b></li>
+                <p>Every transaction on Galaxyhub includes clear license terms visible to buyers at the point of purchase. Developers define their own licensing models — perpetual, subscription, or trial — and the platform enforces them automatically.</p>
+                <li><b>Zero upfront cost to publish</b></li>
+                <p>Listing your software on Galaxyhub is free. You only pay a small platform fee on successful transactions, so there's no financial barrier to getting your application in front of a global audience.</p>
+            </ul>
+        </div>
+        <footer>
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <h3>Galaxyhub</h3>
+                    <p><strong>Galaxyhub is a marketplace of software and applications</strong>, and a part of <strong>Paradise SDP</strong> (Software Distribution Platform) by <strong>Yash12007</strong>. Developers publish once and reach users worldwide; buyers browse, purchase, and download software licenses directly from the marketplace.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <a href="#hero">Home</a>
+                    <a href="#catalog">Store</a>
+                    <a href="#Announcements">Announcements</a>
+                    <a href="#features">Features</a>
+                    <a href="#why">Why Galaxyhub</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Publishing</h4>
+                    <a href="#features">Publish your app</a>
+                    <a href="#why">Paradise SDP</a>
+                    <a href="#catalog">Browse the store</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 <strong>Galaxyhub</strong> by <strong>Yash12007</strong> &middot; A software &amp; application marketplace &middot; Part of <strong>Paradise SDP</strong>
+            </div>
+        </footer>
+    </main>
+    <script>
+        const searchContainer = document.getElementById('SearchInputParent');
+        const searchInput = searchContainer.querySelector('input');
+        const productGrid = document.getElementById('productGrid');
+        const catalogCount = document.getElementById('catalogCount');
+        const searchOverlay = document.getElementById('SearchOverlay');
+        const searchResults = document.getElementById('SearchResults');
+
+        let products = [];
+
+        // ---------- Product catalog ----------
+        async function loadProducts() {
+            try {
+                const res = await fetch('https://shop.yash12007.com/products');
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                products = Array.isArray(data) ? data : (data.products || []);
+                renderProducts(products);
+                catalogCount.textContent = products.length + ' products available';
+            } catch (err) {
+                productGrid.innerHTML = '<div class="catalog-empty">Could not load products from the store. Please try again later.</div>';
+                catalogCount.textContent = 'Store unavailable';
+                console.error('Galaxyhub catalog error:', err);
+            }
+        }
+
+        function renderProducts(list) {
+            if (!list.length) {
+                productGrid.innerHTML = '<div class="catalog-empty">No products match your search.</div>';
+                return;
+            }
+            productGrid.innerHTML = list.map(p => {
+                const img = (p.Image && p.Image[0]) || '';
+                const inStock = String(p.instock || '').toLowerCase() === 'yes';
+                const price = p.price || 'Free';
+                const buy = p.PPF || p.DN || '#';
+                const dl = p.DN || p.PPF || '#';
+                return `
+                    <div class="product-card" data-id="${escapeHtml(p.ID || '')}">
+                        <img class="thumb" src="${img}" alt="${escapeHtml(p.Name)}" loading="lazy" onerror="this.style.display='none'">
+                        <div class="body">
+                            <span class="badge ${inStock ? '' : 'out'}">${inStock ? 'In stock' : 'Out of stock'}</span>
+                            <div class="name">${escapeHtml(p.Name)}</div>
+                            <div class="desc">${escapeHtml(p.Description || '')}</div>
+                            <div class="meta">
+                                <span class="price">${escapeHtml(price)}</span>
+                                <span>${escapeHtml(p.size || '')}</span>
+                            </div>
+                            <div class="actions">
+                                <a class="buy" href="${buy}" target="_blank" rel="noopener">Buy</a>
+                                <a href="${dl}" target="_blank" rel="noopener">Download</a>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        // ---------- Live search over real products ----------
+        function runSearch(query) {
+            const q = query.trim().toLowerCase();
+            if (!q) {
+                searchResults.innerHTML = `
+                    <p style="font-size: 13px; color: #999; margin-bottom: 8px;">Try searching for popular tools</p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span class="chip" data-q="antivirus" style="background: #1a1d2e; padding: 6px 14px; border-radius: 16px; font-size: 13px; color: #aaa; cursor: pointer;">Antivirus</span>
+                        <span class="chip" data-q="monitor" style="background: #1a1d2e; padding: 6px 14px; border-radius: 16px; font-size: 13px; color: #aaa; cursor: pointer;">Performance</span>
+                        <span class="chip" data-q="3d" style="background: #1a1d2e; padding: 6px 14px; border-radius: 16px; font-size: 13px; color: #aaa; cursor: pointer;">3D Assets</span>
+                        <span class="chip" data-q="game" style="background: #1a1d2e; padding: 6px 14px; border-radius: 16px; font-size: 13px; color: #aaa; cursor: pointer;">Game Dev</span>
+                    </div>`;
+                document.querySelectorAll('.chip').forEach(chip => {
+                    chip.onclick = () => { searchInput.value = chip.dataset.q; runSearch(chip.dataset.q); };
+                });
+                return;
+            }
+            const matches = products.filter(p =>
+                (p.Name || '').toLowerCase().includes(q) ||
+                (p.Description || '').toLowerCase().includes(q) ||
+                (p.Publisher && p.Publisher.Name || '').toLowerCase().includes(q)
+            );
+            if (!matches.length) {
+                searchResults.innerHTML = '<p style="font-size: 13px; color: #999;">No products found for "' + escapeHtml(q) + '".</p>';
+                return;
+            }
+            searchResults.innerHTML = matches.slice(0, 5).map(p => {
+                const img = (p.Image && p.Image[0]) || '';
+                return `
+                    <div class="search-result-item" data-id="${p.ID}">
+                        <img src="${img}" alt="" onerror="this.style.display='none'">
+                        <div>
+                            <div class="sr-name">${escapeHtml(p.Name)}</div>
+                            <div class="sr-cat">${escapeHtml(p.Publisher ? p.Publisher.Name : '')} &middot; ${escapeHtml(p.size || '')}</div>
+                            <div class="sr-price">${escapeHtml(p.price || 'Free')}</div>
+                        </div>
+                    </div>`;
+            }).join('');
+            document.querySelectorAll('.search-result-item').forEach(item => {
+                item.onclick = () => {
+                    const id = item.dataset.id;
+                    const card = document.querySelector('.product-card[data-id="' + id + '"]');
+                    if (card) {
+                        closeSearch();
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        card.style.outline = '2px solid #f7b731';
+                        setTimeout(() => card.style.outline = '', 2000);
+                    }
+                };
+            });
+        }
+
+        function openSearch() {
+            searchOverlay.classList.add('active');
+            searchOverlay.setAttribute('aria-hidden', 'false');
+            runSearch(searchInput.value);
+        }
+
+        function closeSearch() {
+            searchOverlay.classList.remove('active');
+            searchOverlay.setAttribute('aria-hidden', 'true');
+            searchInput.blur();
+        }
+
+        searchInput.addEventListener('focus', openSearch);
+        searchInput.addEventListener('input', () => runSearch(searchInput.value));
+
+        // Escape key exits the search overlay
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+        });
+
+        // Clicking the overlay background (outside results) closes it
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay || e.target.classList.contains('close-hint')) {
+                closeSearch();
+            }
+        });
+
+        // Smooth scroll for nav and footer anchor links
+        document.querySelectorAll('#NavigationMenu a[href^="#"], footer a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Load the real catalog on page load
+        loadProducts();
+    </script>
+</body>
+</html>
